@@ -75,11 +75,11 @@ Uma aplicação que auxilia na validação e manipulação de um tipo de planilh
 
 ## Tecnologias utilizadas
 - Front-End:
-    * ReactJS
-    * Vitest
+    * [![a](https://skillicons.dev/icons?i=react&theme=light)] ReactJS
+    * [![My Skills](https://skillicons.dev/icons?i=vitest&theme=light)] Vitest
 - Back-End:
-    * NodeJS com Fastify e Zod
-    * SQLite3 com Knex
+    * [![My Skills](https://skillicons.dev/icons?i=nodejs&theme=light)] NodeJS
+    * [![My Skills](https://skillicons.dev/icons?i=sqlite&theme=light)] SQLite
 
 ## Desenvolvedor
 - [fotodogithubaq] @luisartur8
