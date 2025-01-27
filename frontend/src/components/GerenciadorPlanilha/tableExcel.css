@@ -1,0 +1,132 @@
+.table-excel {
+    border: 2px solid black;
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 63vh;
+    user-select: none;
+}
+
+.nenhuma-planilha {
+    color: black;
+    font-size: 24px;
+    display: flex;
+    row-gap: 15px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 60vh;
+}
+
+.minha-tabela {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.minha-tabela th .minha-tabela td {
+    display: flex;
+    text-align: center;
+    align-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.minha-tabela th {
+    white-space: nowrap;
+    padding: 3px 3px;
+    border: 1px solid #b8b8b8;
+}
+
+.minha-tabela td {
+    white-space: nowrap;
+    padding: 3px 3px;
+    border: 1px solid #b8b8b8;
+}
+
+.delete-row-button {
+    background-color: transparent;
+    border-radius: 50%;
+    padding: 3px;
+    border: none;
+    width: 24px;
+    height: 24px;
+    outline: none;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.delete-row-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.delete-row-button:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.botoes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 5px;
+}
+
+.btn-insert-left,
+.btn-insert-right {
+    border: none;
+    padding: 3px;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-insert-left:hover,
+.btn-insert-right:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-insert-left:active,
+.btn-insert-right:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.thead-icons-central button {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 3px;
+    outline: none;
+}
+
+.thead-icons-central button img {
+    width: 24px;
+    height: 24px;
+}
+
+.thead-icons-central button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.thead-icons-central button:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#comboTipos {
+    max-width: 150px;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+.selected-cell {
+    box-shadow: 0px 0px 0px 2px #0063af inset;
+    border: 1px solid #0063af;
+}
+
+.selected-cell-editable {
+    outline: 2px solid #a8c7fa;
+}
+
+.highlighted {
+    background-color: red;
+}
