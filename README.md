@@ -73,13 +73,27 @@ Uma aplicação que auxilia na validação e manipulação de um tipo de planilh
     * Juntar DDD e Telefone, informando o que deu errado.
     * É possível mesclar colunas com o mesmo tipo de dado.
 
-## Tecnologias utilizadas
-- Front-End:
-![ReactJS](https://skillicons.dev/icons?i=react&theme=light) ReactJS
-![Vitest](https://skillicons.dev/icons?i=vitest&theme=light) Vitest
-- Back-End:
-![NodeJS](https://skillicons.dev/icons?i=nodejs&theme=light) NodeJS
-![SQLite](https://skillicons.dev/icons?i=sqlite&theme=light) SQLite
+<h2 align="center">Tecnologias Utilizadas</h2>
+
+<h3 align="center">Front-End</h3>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react&theme=light" alt="ReactJS" width="50" height="50">
+  <br>ReactJS
+</p>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=vitest&theme=light" alt="Vitest" width="50" height="50">
+  <br>Vitest
+</p>
+
+<h3 align="center">Back-End</h3>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=nodejs&theme=light" alt="NodeJS" width="50" height="50">
+  <br>NodeJS
+</p>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=sqlite&theme=light" alt="SQLite" width="50" height="50">
+  <br>SQLite
+</p>
 
 ## Desenvolvedor
 - [fotodogithubaq] @luisartur8
