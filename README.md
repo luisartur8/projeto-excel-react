@@ -96,7 +96,7 @@ Uma aplicação que auxilia na validação e manipulação de um tipo de planilh
 </p>
 
 ## Desenvolvedor
-- [fotodogithubaq] @luisartur8
+- ![github](https://skillicons.dev/icons?i=github&theme=light) @luisartur8
 
 ## Conclusão
 
