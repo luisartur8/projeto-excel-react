@@ -112,7 +112,7 @@ function TableCell({
             )
             }
             onClick={() => setSelectedCell({ row: rowIndex, col: colIndex })}
-            onDoubleClick={() => dblClickHandler(setEditable, cellRef, moverCursorParaFinal)}
+            onDoubleClick={() => dblClickHandler(isEditable, setEditable, cellRef, moverCursorParaFinal)}
             contentEditable={isEditable}
             suppressContentEditableWarning={isEditable}
             onBlur={handleBlur}
