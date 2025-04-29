@@ -53,7 +53,7 @@ function CarregaPlanilhaRenderBody({
                 const row = tableData[rowIndex];
 
                 return (
-                <tr
+                    <tr
                         key={rowIndex}
                         style={{
                             position: "absolute",
@@ -69,18 +69,18 @@ function CarregaPlanilhaRenderBody({
                         </td>
                         <td style={{ width: `${colWidths[1]}px` }}>
                             {rowIndex + 1}
-                    </td>
+                        </td>
                         {row.map((cell, colIndex) => (
                             <React.Fragment key={colIndex}>
-                            <TableCell
-                                rowIndex={rowIndex}
-                                colIndex={colIndex}
-                                cell={cell}
-                                selectedCell={selectedCell}
-                                setSelectedCell={setSelectedCell}
-                                isEditable={isEditable}
-                                setEditable={setEditable}
-                                totalRows={tableData.length}
+                                <TableCell
+                                    rowIndex={rowIndex}
+                                    colIndex={colIndex}
+                                    cell={cell}
+                                    selectedCell={selectedCell}
+                                    setSelectedCell={setSelectedCell}
+                                    isEditable={isEditable}
+                                    setEditable={setEditable}
+                                    totalRows={tableData.length}
                                     totalCols={row.length}
                                     updateCellValue={updateCellValue}
                                     tableData={tableData}
@@ -91,7 +91,7 @@ function CarregaPlanilhaRenderBody({
                                 />
                             </React.Fragment>
                         ))}
-                </tr>
+                    </tr>
                 );
             })}
         </>

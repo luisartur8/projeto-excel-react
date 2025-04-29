@@ -130,16 +130,16 @@ function CarregaPlanilha({
         rowVirtualizer.scrollToIndex(selectedCell.row);
     }, [selectedCell, rowVirtualizer])
 
-     /**
-     * Função para executar validação nos dados da célula da tabela.
-     * 
-     * @param {string} selectValue - O valor selecionado para validação.
-     * @param {number} columnIndex - Índice da coluna a ser validada.
-     * @param {boolean} cb - Informação para validação de telefone.
-     * @param {string} ddd - DDD do telefone.
-     * @param {string} formatoOriginal - Formato original de uma data.
-     * @param {string} formatoFinal - Formato desejado para data.
-     */
+    /**
+    * Função para executar validação nos dados da célula da tabela.
+    * 
+    * @param {string} selectValue - O valor selecionado para validação.
+    * @param {number} columnIndex - Índice da coluna a ser validada.
+    * @param {boolean} cb - Informação para validação de telefone.
+    * @param {string} ddd - DDD do telefone.
+    * @param {string} formatoOriginal - Formato original de uma data.
+    * @param {string} formatoFinal - Formato desejado para data.
+    */
     const executarValidacao = (selectValue, columnIndex, cb, ddd, formatoOriginal, formatoFinal) => {
         const updatedData = tableData.map((row) => {
             const cellData = row[columnIndex];
