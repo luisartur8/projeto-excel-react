@@ -38,20 +38,22 @@ const aplicarMascaraCPF = valor => valor.replace(/(\d{3})(\d)/, '$1.$2').replace
 const aplicarMascaraCNPJ = valor => valor.replace(/(\d{2})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
 
 export function corrigirNome(nome) {
+    // Regex: Remove espaço extra por apenas um | Substitui '.' e '&' por espaço.
+    nome = nome.trim().toUpperCase().replace(/[.&]/g, ' ').replace(/\s+/g, " ");
 
-    // Regex: Remove espaço extra por apenas um
-    nome = nome.trim().toUpperCase().replace(/\s+/g, " ");
+    // Ü -> U
+    nome = nome.replace(/[äÄ]/g, "A")
+    nome = nome.replace(/[öÖ]/g, "O")
+    nome = nome.replace(/[üÜ]/g, "U")
 
     if (nome !== nome.replace(/[^A-ZÀ-ÚÃ-ÕÇ a-zã-õ]/g, "")) {
         return "";
     }
 
     return nome;
-
 }
 
 export function corrigirTelefone(telefone, cbTelefoneInserirDDD, ddd) {
-
     if (telefone.includes('+') && !telefone.replace(/[^0-9+]/g, "").startsWith('+55')) {
         return "";
     }
@@ -94,11 +96,9 @@ export function corrigirTelefone(telefone, cbTelefoneInserirDDD, ddd) {
     }
 
     return "";
-
 }
 
 export function corrigirTelefoneSemDDD(telefone) {
-
     telefone = sanitizeNumber(telefone);
 
     if (telefone.length >= 10 || telefone.length <= 7) {
@@ -113,17 +113,10 @@ export function corrigirTelefoneSemDDD(telefone) {
         return "";
     }
 
-    if ((telefone.charAt(1) === '9' || telefone.charAt(1) === '8')) {
-        return telefone;
-    }
-
-    return '';
-
+    return telefone;
 }
 
-
 export function corrigirCpf_cnpj(cpf_cnpj) {
-
     cpf_cnpj = sanitizeNumber(cpf_cnpj);
 
     if (cpf_cnpj.length > 14 || cpf_cnpj.length <= 3) {
@@ -145,11 +138,9 @@ export function corrigirCpf_cnpj(cpf_cnpj) {
         }
         return aplicarMascaraCNPJ(cnpj);
     }
-
 }
 
 export function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/yyyy', formatoFinal = 'dd/mm/yyyy') {
-
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
     const numeroBarras = (data_nascimento.match(/\//g) || []).length; // Quantidade de barras
@@ -248,11 +239,9 @@ export function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/
     }
 
     return dataFormatada;
-
 }
 
 export function corrigirGenero(genero) {
-
     if (!genero || genero.trim().length < 1) {
         return "";
     }
@@ -283,11 +272,9 @@ export function corrigirGenero(genero) {
     }
 
     return "";
-
 }
 
 export function corrigirEmail(email) {
-
     // Regex: Remove espaços extras
     email = email.trim().toLowerCase().replace(/\s+/g, " ");
 
@@ -316,17 +303,19 @@ export function corrigirEmail(email) {
 
     // Mais comum do que parece
     if (email.endsWith('.con')) {
-        return "";
+        return email.slice(0, -4) + ".com"
+    }
+
+    if (email.endsWith('.con.br')) {
+        return email.slice(0, -7) + ".com.br"
     }
 
     return email;
-
 }
 
 export const corrigirAnotacao = anotacao => anotacao.trim().replace(/,/g, " ").replace(/\s+/g, " "); // Tirar as virgulas / Remover espaços extras por apenas um.
 
 export function corrigirDDD(ddd) {
-
     ddd = sanitizeNumber(ddd);
 
     if (!ddd || ddd.length < 2) {
@@ -334,12 +323,10 @@ export function corrigirDDD(ddd) {
     }
 
     return validDDDs.has(ddd) ? ddd : '';
-
 }
 
 // Retorna boolean - Pode passar o telefone inteiro
 export function isValidDDD(telefone) {
-
     telefone = sanitizeNumber(telefone);
 
     if (!telefone || telefone.length < 2) {
@@ -349,7 +336,6 @@ export function isValidDDD(telefone) {
     const ddd = telefone.substring(0, 2);
 
     return validDDDs.has(ddd);
-
 }
 
 function isValidCPF(CPF) {

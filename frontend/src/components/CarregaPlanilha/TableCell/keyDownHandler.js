@@ -1,4 +1,16 @@
-export const handleKeyDown = (e, cellRef, cell, cellId, updateCellValue, selectedCell, setSelectedCell, isEditable, setEditable, tableData, totalRows, totalCols, rowIndex, colIndex, theme, moverCursorParaFinal) => {
+export const handleKeyDown = (
+    e,
+    cellRef, cell,
+    cellId, updateCellValue,
+    selectedCell, setSelectedCell,
+    isEditable, setEditable,
+    tableData, setTableData,
+    totalRows, totalCols,
+    rowIndex, colIndex,
+    theme,
+    historic, setHistoric,
+    moverCursorParaFinal
+) => {
     const { row, col } = selectedCell;
     let newRow = row;
     let newCol = col;
@@ -15,9 +27,19 @@ export const handleKeyDown = (e, cellRef, cell, cellId, updateCellValue, selecte
                     return;
                 });
             } else if (e.key === 'z' || e.key === 'Z') {
-                console.log('Ctrl + Z');
+                if (historic.length > 1) {
+                    const newData = historic[historic.length - 2]
+
+                    setHistoric((prevHistoric) => {
+                        return prevHistoric.slice(0, -1);
+                    });
+
+                    setTableData(newData);
+                }
+                return;
             } else if (e.key === 'y' || e.key === 'Y') {
                 console.log('Ctrl + Y'); // Contrario de Ctrl + Z
+                return;
             } else if (e.key === 'ArrowDown' && row < totalRows - 1) {
                 let found = false;
                 let atual = newRow;

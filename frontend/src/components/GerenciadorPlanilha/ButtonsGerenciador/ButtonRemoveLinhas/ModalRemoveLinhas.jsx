@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import ModalRemoveLinhasVazias from "./ModalRemoveLinhasVazias";
-import ModalRemoveLinhasCheckbox from "./ModalRemoveLinhasCheckbox";
+import ModalRemoveLinhasCheckboxCliente from "./ModalRemoveLinhasCheckboxCliente";
+import ModalRemoveLinhasCheckboxLancamento from "./ModalRemoveLinhasCheckboxLancamento";
+import ModalRemoveLinhasCheckboxOportunidade from "./ModalRemoveLinhasCheckboxOportunidade";
+import ModalRemoveLinhasCheckboxProdutos from "./ModalRemoveLinhasCheckboxProdutos";
 import ModalRemoveLinhasMesmoTempo from "./ModalRemoveLinhasMesmoTempo";
 
 import { centerModal, makeDraggable } from "@DragModal/arrastarModais";
@@ -20,12 +23,19 @@ import './ModalRemoveLinhas.css'
  * @param {Function} setTableData - Função para atualizar os dados da tabela.
  * @param {Array} tableHeader - Cabeçalhos da tabela.
  * @param {Function} setTableHeader - Função para atualizar os cabeçalhos da tabela.
+ * @param {string} tipoPlanilha - Tipo de planilha seno usada no momento.
  * 
  * @returns {JSX.Element} - Modal de remoção de linhas.
  */
-function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTableData, tableHeader, setTableHeader }) {
+function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTableData, tableHeader, setTableHeader, tipoPlanilha }) {
 
-    // Estado para os checkboxes que controlam os campos a serem considerados na remoção de linhas.
+    /**
+     * Estado para os checkboxes que controlam os campos a serem considerados na remoção de linhas.
+     * Alguns estados podem estar presentes em mais de um tipo de planilha.
+     * (Tipo Cliente, Lançamento, Oportunidade e Produtos).
+     */
+
+    // Cliente.
     const [cbNome, setCbNome] = useState(false);
     const [cbTelefone, setCbTelefone] = useState(false);
     const [cbCpfCnpj, setCbCpfCnpj] = useState(false);
@@ -33,6 +43,27 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
     const [cbGenero, setCbGenero] = useState(false);
     const [cbEmail, setCbEmail] = useState(false);
     const [cbAnotacao, setCbAnotacao] = useState(false);
+
+    // Lançamento.
+    const [cbClienteNome, setCbClienteNome] = useState(false);
+    const [cbClienteTelefone, setCbClienteTelefone] = useState(false);
+    const [cbClienteCpfCnpj, setCbClienteCpfCnpj] = useState(false);
+    const [cbValorVenda, setCbValorVenda] = useState(false);
+    const [cbValorResgate, setCbValorResgate] = useState(false);
+    const [cbAnotacaoVenda, setCbAnotacaoVenda] = useState(false);
+    const [cbItemVenda, setCbItemVenda] = useState(false);
+    const [cbDataLancamento, setCbDataLancamento] = useState(false);
+    const [cbNomeVendedor, setCbNomeVendedor] = useState(false);
+    const [cbCodigoVendedor, setCbCodigoVendedor] = useState(false);
+
+    // Oportunidade.
+    const [cbBonusValor, setCbBonusValor] = useState(false);
+    const [cbBonusValidade, setCbBonusValidade] = useState(false);
+
+    // Produtos.
+    const [cbCodigo, setCbCodigo] = useState(false);
+    const [cbPercentual, setCbPercentual] = useState(false);
+    const [cbValidade, setCbValidade] = useState(false);
 
     // Estado para armazenar as informações sobre as colunas ou linhas removidas.
     const [infoRemovedRowCols, setInfoRemovedRowCols] = useState('ㅤ');
@@ -44,16 +75,45 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
     useEffect(() => {
         if (removeRowsOpen) {
             setCbNome(false);
-            setCbTelefone(true);
-            setCbCpfCnpj(true);
+            setCbTelefone(false);
+            setCbCpfCnpj(false);
             setCbDataNascimento(false);
             setCbGenero(false);
             setCbEmail(false);
             setCbAnotacao(false);
+            setCbClienteNome(false);
+            setCbClienteTelefone(false);
+            setCbClienteCpfCnpj(false);
+            setCbValorVenda(false);
+            setCbValorResgate(false);
+            setCbAnotacaoVenda(false);
+            setCbItemVenda(false);
+            setCbDataLancamento(false);
+            setCbNomeVendedor(false);
+            setCbCodigoVendedor(false);
+            setCbBonusValor(false);
+            setCbBonusValidade(false);
+            setCbCodigo(false);
+            setCbPercentual(false);
+            setCbValidade(false);
+
+            if (tipoPlanilha === 'cliente') {
+                setCbTelefone(true);
+                setCbCpfCnpj(true);
+            } else if (tipoPlanilha === 'lancamento') {
+                setCbClienteTelefone(true);
+                setCbClienteCpfCnpj(true);
+            } else if (tipoPlanilha === 'oportunidade') {
+                setCbTelefone(true);
+                setCbCpfCnpj(true);
+            } else if (tipoPlanilha === 'produtos') {
+                setCbNome(true);
+            }
+
             setInfoRemovedRowCols('ㅤ');
             centerModal('#modalRemoveLinhas');
         }
-    }, [removeRowsOpen])
+    }, [removeRowsOpen, tipoPlanilha])
 
     // Permite o modal ser arrastado na tela.
     useEffect(() => {
@@ -84,22 +144,92 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
                     </div>
                     <div className="modal-secao-remover-quando-vazia2">
                         <label>Quando vazias ao mesmo tempo:</label>
-                        <ModalRemoveLinhasCheckbox
-                            cbNome={cbNome}
-                            setCbNome={setCbNome}
-                            cbTelefone={cbTelefone}
-                            setCbTelefone={setCbTelefone}
-                            cbCpfCnpj={cbCpfCnpj}
-                            setCbCpfCnpj={setCbCpfCnpj}
-                            cbDataNascimento={cbDataNascimento}
-                            setCbDataNascimento={setCbDataNascimento}
-                            cbGenero={cbGenero}
-                            setCbGenero={setCbGenero}
-                            cbEmail={cbEmail}
-                            setCbEmail={setCbEmail}
-                            cbAnotacao={cbAnotacao}
-                            setCbAnotacao={setCbAnotacao}
-                        />
+                        {(() => {
+                            switch (tipoPlanilha) {
+                                case 'cliente':
+                                    return (
+                                        <ModalRemoveLinhasCheckboxCliente
+                                            cbNome={cbNome}
+                                            setCbNome={setCbNome}
+                                            cbTelefone={cbTelefone}
+                                            setCbTelefone={setCbTelefone}
+                                            cbCpfCnpj={cbCpfCnpj}
+                                            setCbCpfCnpj={setCbCpfCnpj}
+                                            cbDataNascimento={cbDataNascimento}
+                                            setCbDataNascimento={setCbDataNascimento}
+                                            cbGenero={cbGenero}
+                                            setCbGenero={setCbGenero}
+                                            cbEmail={cbEmail}
+                                            setCbEmail={setCbEmail}
+                                            cbAnotacao={cbAnotacao}
+                                            setCbAnotacao={setCbAnotacao}
+                                        />
+                                    );
+                                case 'lancamento':
+                                    return (
+                                        <ModalRemoveLinhasCheckboxLancamento
+                                            cbClienteNome={cbClienteNome}
+                                            setCbClienteNome={setCbClienteNome}
+                                            cbClienteTelefone={cbClienteTelefone}
+                                            setCbClienteTelefone={setCbClienteTelefone}
+                                            cbClienteCpfCnpj={cbClienteCpfCnpj}
+                                            setCbClienteCpfCnpj={setCbClienteCpfCnpj}
+                                            cbValorVenda={cbValorVenda}
+                                            setCbValorVenda={setCbValorVenda}
+                                            cbValorResgate={cbValorResgate}
+                                            setCbValorResgate={setCbValorResgate}
+                                            cbAnotacaoVenda={cbAnotacaoVenda}
+                                            setCbAnotacaoVenda={setCbAnotacaoVenda}
+                                            cbItemVenda={cbItemVenda}
+                                            setCbItemVenda={setCbItemVenda}
+                                            cbDataLancamento={cbDataLancamento}
+                                            setCbDataLancamento={setCbDataLancamento}
+                                            cbNomeVendedor={cbNomeVendedor}
+                                            setCbNomeVendedor={setCbNomeVendedor}
+                                            cbCodigoVendedor={cbCodigoVendedor}
+                                            setCbCodigoVendedor={setCbCodigoVendedor}
+                                        />
+                                    );
+                                case 'oportunidade':
+                                    return (
+                                        <ModalRemoveLinhasCheckboxOportunidade
+                                            cbNome={cbNome}
+                                            setCbNome={setCbNome}
+                                            cbTelefone={cbTelefone}
+                                            setCbTelefone={setCbTelefone}
+                                            cbCpfCnpj={cbCpfCnpj}
+                                            setCbCpfCnpj={setCbCpfCnpj}
+                                            cbDataNascimento={cbDataNascimento}
+                                            setCbDataNascimento={setCbDataNascimento}
+                                            cbGenero={cbGenero}
+                                            setCbGenero={setCbGenero}
+                                            cbEmail={cbEmail}
+                                            setCbEmail={setCbEmail}
+                                            cbAnotacao={cbAnotacao}
+                                            setCbAnotacao={setCbAnotacao}
+                                            cbBonusValor={cbBonusValor}
+                                            setCbBonusValor={setCbBonusValor}
+                                            cbBonusValidade={cbBonusValidade}
+                                            setCbBonusValidade={setCbBonusValidade}
+                                        />
+                                    );
+                                case 'produtos':
+                                    return (
+                                        <ModalRemoveLinhasCheckboxProdutos
+                                            cbNome={cbNome}
+                                            setCbNome={setCbNome}
+                                            cbCodigo={cbCodigo}
+                                            setCbCodigo={setCbCodigo}
+                                            cbPercentual={cbPercentual}
+                                            setCbPercentual={setCbPercentual}
+                                            cbValidade={cbValidade}
+                                            setCbValidade={setCbValidade}
+                                        />
+                                    )
+                                default:
+                                    return <p>Erro: Tipo de planilha inexistente ({tipoPlanilha})</p>;
+                            }
+                        })()}
                         <div className="informacoes-linhas-removidas">{infoRemovedRowCols}</div>
                         <ModalRemoveLinhasMesmoTempo
                             tableData={tableData}
@@ -113,14 +243,30 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
                             cbGenero={cbGenero}
                             cbEmail={cbEmail}
                             cbAnotacao={cbAnotacao}
+                            //
+                            cbClienteNome={cbClienteNome}
+                            cbClienteTelefone={cbClienteTelefone}
+                            cbClienteCpfCnpj={cbClienteCpfCnpj}
+                            cbValorVenda={cbValorVenda}
+                            cbValorResgate={cbValorResgate}
+                            cbAnotacaoVenda={cbAnotacaoVenda}
+                            cbItemVenda={cbItemVenda}
+                            cbDataLancamento={cbDataLancamento}
+                            cbNomeVendedor={cbNomeVendedor}
+                            cbCodigoVendedor={cbCodigoVendedor}
+                            //
+                            cbBonusValor={cbBonusValor}
+                            cbBonusValidade={cbBonusValidade}
+                            //
+                            cbCodigo={cbCodigo}
+                            cbPercentual={cbPercentual}
+                            cbValidade={cbValidade}
                         />
                     </div>
                 </div>
-
             </div>
         </div>
     )
-
 }
 
 export default ModalRemoveLinhas;
@@ -132,4 +278,5 @@ ModalRemoveLinhas.propTypes = {
     setTableData: PropTypes.func.isRequired,
     tableHeader: PropTypes.array.isRequired,
     setTableHeader: PropTypes.func.isRequired,
+    tipoPlanilha: PropTypes.string.isRequired
 }

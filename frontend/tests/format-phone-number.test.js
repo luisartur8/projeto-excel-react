@@ -6,8 +6,8 @@ describe('Função corrigirTelefone', () => {
         const telefone1 = '+55 48 988888888';
         const telefone2 = '+54 48 988888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": '48'}));
-        const valueFormmated2 = String(corrigirTelefone(telefone2, true, {"value": '48'}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, 48));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, 48));
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
         expect(valueFormmated2).toBe((''));
@@ -18,24 +18,27 @@ describe('Função corrigirTelefone', () => {
         const telefone2 = '+55 988888888';
         const telefone3 = '55 988888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": '48'}));
-        const valueFormmated2 = String(corrigirTelefone(telefone2, true, {"value": '48'}));
-        const valueFormmated3 = String(corrigirTelefone(telefone3, true, {"value": '48'}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, 48));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, 48));
+        const valueFormmated3 = String(corrigirTelefone(telefone3, true, 48));
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe(('(55) 98888-8888'));
     })
 
-    test('Inserir o DDD do input corretamente', () => {
+    test('Inserir um DDD válido', () => {
         const telefone1 = '11 988888888';
         const telefone2 = '988888888';
+        const telefone3 = '988888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": '48'}));
-        const valueFormmated2 = String(corrigirTelefone(telefone2, true, {"value": '48'}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, 48));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, 48));
+        const valueFormmated3 = String(corrigirTelefone(telefone3, true, 23));
 
         expect(valueFormmated1).toBe(('(11) 98888-8888'));
         expect(valueFormmated2).toBe(('(48) 98888-8888'));
+        expect(valueFormmated3).toBe((''));
     })
 
     test('Tamanho correto', () => {
@@ -43,21 +46,21 @@ describe('Função corrigirTelefone', () => {
         const telefone2 = '8 55 11 98888 8888';
         const telefone3 = '055 11 98888 8888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": ''}));
-        const valueFormmated2 = String(corrigirTelefone(telefone2, true, {"value": ''}));
-        const valueFormmated3 = String(corrigirTelefone(telefone3, true, {"value": ''}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, ''));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, ''));
+        const valueFormmated3 = String(corrigirTelefone(telefone3, true, ''));
 
         expect(valueFormmated1).toBe((''));
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe(('(11) 98888-8888'));
     })
 
-    test('Adicionando o 9 extra', () => {
+    test('Inserindo o nonagésino dígito', () => {
         const telefone1 = '8888 8888';
         const telefone2 = '48 88888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": '48'}));
-        const valueFormmated2 = String(corrigirTelefone(telefone2, true, {"value": ''}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, 48));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, ''));
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
         expect(valueFormmated2).toBe(('(48) 98888-8888'));
@@ -66,7 +69,7 @@ describe('Função corrigirTelefone', () => {
     test('Tamanho correto com DDD retornando telefone formatado passando o DDD tipo String', () => {
         const telefone1 = '88888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": '48'}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, '48'));
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
     })
@@ -74,7 +77,7 @@ describe('Função corrigirTelefone', () => {
     test('Tamanho correto com DDD retornando telefone formatado passando o DDD tipo Number', () => {
         const telefone1 = '88888888';
 
-        const valueFormmated1 = String(corrigirTelefone(telefone1, true, {"value": 48}));
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, 48));
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
     })
@@ -99,7 +102,7 @@ describe('Função corrigirTelefoneSemDDD', () => {
         expect(valueFormmated4).toBe((''));
     })
 
-    test('Contém o 9 extra na frente, ou adiciona caso não tenha', () => {
+    test('Contém o 9 extra na frente, inserindo caso não tenha', () => {
         const contemNove = '988888888';
         const contemOito = '888888888';
         const naoContem = '77777777';
@@ -111,21 +114,5 @@ describe('Função corrigirTelefoneSemDDD', () => {
         expect(valueFormmated1).toBe(('988888888'));
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe(('977777777'));
-
-    })
-
-    test('Conferir se o numero após o 9 extra é 9 ou 8', () => {
-        const telefone1 = '9 9888 8888';
-        const telefone2 = '9 8888 8888';
-        const telefone3 = '9 7888 8888';
-
-        const valueFormmated1 = String(corrigirTelefoneSemDDD(telefone1));
-        const valueFormmated2 = String(corrigirTelefoneSemDDD(telefone2));
-        const valueFormmated3 = String(corrigirTelefoneSemDDD(telefone3));
-
-        expect(valueFormmated1).toBe(('998888888'));
-        expect(valueFormmated2).toBe(('988888888'));
-        expect(valueFormmated3).toBe((''));
-
     })
 })

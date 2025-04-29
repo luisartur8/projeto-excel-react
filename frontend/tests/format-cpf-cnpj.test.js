@@ -2,7 +2,6 @@ import { describe, test, expect } from 'vitest';
 import { corrigirCpf_cnpj } from '@utils/validacao';
 
 describe('Função corrigirCpf_cnpj', () => {
-
     test('Tamanho correto', () => {
         const documento1 = '111.111.111-11';
         const documento2 = '000.000.000-000';
@@ -15,11 +14,9 @@ describe('Função corrigirCpf_cnpj', () => {
         expect(valueFormmated1).toBe(('111.111.111-11'));
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe(('454.429.883-08'));
-
     })
 
     test('É valido', () => {
-
         const documento1 = '454.429.883-08';
         const documento2 = '000.000.000-000';
 
@@ -30,8 +27,7 @@ describe('Função corrigirCpf_cnpj', () => {
         expect(valueFormmated2).toBe((''));
     })
 
-    test('Diferencia entre cpf e cnpj e aplica mascara', () => {
-
+    test('Diferencia entre cpf e cnpj aplicando mascara', () => {
         const documento1 = '45442988308';
         const documento2 = '13407099000192';
 
@@ -43,7 +39,6 @@ describe('Função corrigirCpf_cnpj', () => {
     })
 
     test('Adiciona zeros a esquerda', () => {
-
         const documento1 = '12.345.678-90';
         const documento2 = '4.231.574/0001-21';
 
@@ -53,5 +48,4 @@ describe('Função corrigirCpf_cnpj', () => {
         expect(valueFormmated1).toBe(('012.345.678-90'));
         expect(valueFormmated2).toBe(('04.231.574/0001-21'));
     })
-
 })

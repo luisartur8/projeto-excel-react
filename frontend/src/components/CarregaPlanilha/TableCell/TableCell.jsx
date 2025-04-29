@@ -38,7 +38,11 @@ function TableCell({
     totalRows,
     totalCols,
     updateCellValue,
-    tableData
+    tableData,
+    setTableData,
+    colWidths,
+    historic,
+    setHistoric
 }) {
 
     const cellRef = useRef(null);
@@ -77,6 +81,7 @@ function TableCell({
             id={cellId}
             key={colIndex}
             ref={cellRef}
+            width={`${colWidths[colIndex + 2]}px`}
             style={{
                 ...cell.style,
                 boxShadow: isSelected ? '0px 0px 0px 2px #0063af inset' : 'none',
@@ -95,11 +100,14 @@ function TableCell({
                 isEditable,
                 setEditable,
                 tableData,
+                setTableData,
                 totalRows,
                 totalCols,
                 rowIndex,
                 colIndex,
                 theme,
+                historic,
+                setHistoric,
                 moverCursorParaFinal
             )
             }
@@ -132,6 +140,10 @@ TableCell.propTypes = {
     totalCols: PropTypes.number.isRequired,
     updateCellValue: PropTypes.func.isRequired,
     tableData: PropTypes.array.isRequired,
+    setTableData: PropTypes.func.isRequired,
+    colWidths: PropTypes.array.isRequired,
+    historic: PropTypes.array.isRequired,
+    setHistoric: PropTypes.func.isRequired
 };
 
 export default TableCell;

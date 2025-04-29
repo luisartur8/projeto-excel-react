@@ -2,7 +2,6 @@ import { describe, test, expect } from 'vitest';
 import { corrigirData_nascimento } from '@utils/validacao';
 
 describe('Função corrigirData_nascimento', () => {
-
     test('Substituição por barra', () => {
         const documento1 = '20-10-2024';
         const documento2 = '20;10;2024';
@@ -15,7 +14,6 @@ describe('Função corrigirData_nascimento', () => {
         expect(valueFormmated1).toBe(('20/10/2024'));
         expect(valueFormmated2).toBe(('20/10/2024'));
         expect(valueFormmated3).toBe(('20/10/2024'));
-
     })
 
     test('Tem duas barras', () => {
@@ -96,25 +94,19 @@ describe('Função corrigirData_nascimento', () => {
     test('Formatando ano de 2 digitos em 4 digitos', () => {
         // Ano (yy)
         // Exemplo:
-        // 01/01/25 -> 01/01/1925
+        // 01/01/25 -> 01/01/1925 (Depende do ano atual)
         // 01/01/24 -> 01/01/2024
         const anoAtual = String(new Date().getFullYear()).slice(2);
 
-        const documento1 = `01/01/${Number(anoAtual) + 1}`;
-        const documento2 = `01/01/${anoAtual}`;
+        const documento1 = `01/01/${Number(anoAtual) + 1}`; // Ano que vem
+        const documento2 = `01/01/${anoAtual}`;             // Hoje
 
         const valueFormmated1 = String(corrigirData_nascimento(documento1, 'dd/mm/yy', 'dd/mm/yyyy'));
         const valueFormmated2 = String(corrigirData_nascimento(documento2, 'dd/mm/yy', 'dd/mm/yyyy'));
 
         expect(valueFormmated1).toBe((`01/01/19${Number(anoAtual) + 1}`));
         expect(valueFormmated2).toBe((`01/01/20${anoAtual}`));
-
     })
 
-    test('Todas as combinações possiveis', () => {
-
-
-
-    })
-
+    test('Todas as combinações possiveis', () => { })
 })

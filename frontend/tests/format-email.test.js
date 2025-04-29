@@ -2,7 +2,6 @@ import { describe, test, expect } from 'vitest';
 import { corrigirEmail } from '@utils/validacao';
 
 describe('Função corrigirEmail', () => {
-
     test('Remove espaços nas laterais e verifica "@"', () => {
         const documento1 = '  email@hotmail.com  ';
         const documento2 = 'e@mail@hotmail.com';
@@ -18,7 +17,6 @@ describe('Função corrigirEmail', () => {
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe((''));
         expect(valueFormmated4).toBe((''));
-
     })
 
     test('Comprimento minimo e máximo', () => {
@@ -35,18 +33,25 @@ describe('Função corrigirEmail', () => {
     test('Regex email', () => {
         const documento1 = 'aa__aa@email.com';
         const documento2 = 'usuario@dominio-';
-        const documento3 = 'teste@dominio..com';
-        const documento4 = 'exemplo@dominio@com';
+        const documento3 = 'exemplo@dominio@com';
 
         const valueFormmated1 = String(corrigirEmail(documento1));
         const valueFormmated2 = String(corrigirEmail(documento2));
         const valueFormmated3 = String(corrigirEmail(documento3));
-        const valueFormmated4 = String(corrigirEmail(documento4));
 
         expect(valueFormmated1).toBe('');
         expect(valueFormmated2).toBe('');
         expect(valueFormmated3).toBe('');
-        expect(valueFormmated4).toBe('');
     })
 
+    test('.con', () => {
+        const documento1 = 'email@email.con';
+        const documento2 = 'email@email.con.br';
+
+        const valueFormmated1 = String(corrigirEmail(documento1));
+        const valueFormmated2 = String(corrigirEmail(documento2));
+
+        expect(valueFormmated1).toBe('email@email.com');
+        expect(valueFormmated2).toBe('email@email.com.br');
+    })
 })

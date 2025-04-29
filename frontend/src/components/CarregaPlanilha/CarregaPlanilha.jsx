@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 // Biblioteca para manipulação de arquivos excel
@@ -19,6 +19,7 @@ import { validarCelula } from "@utils/validacao.js";
 import { theme } from "@theme/theme.js";
 
 import RenderFileUploadScreen from "./FileUploadScreen/RenderFileUploadScreen.jsx";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 /**
  * @component
@@ -60,7 +61,8 @@ function CarregaPlanilha({
     isLocalSubstOpen, setLocalSubstOpen,
     isTelOpen, setTelOpen,
     isValDataOpen, setIsValDataOpen,
-    tipoPlanilha
+    tipoPlanilha,
+    historic, setHistoric
 }) {
 
     // Table
@@ -70,6 +72,63 @@ function CarregaPlanilha({
     // Cells
     const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
     const [isEditable, setEditable] = useState(false);
+
+    // Virtualization
+    const parentRef = useRef(null);
+    const tableRef = useRef(null);
+    const [colWidths, setColWidths] = useState([]);
+
+    const rowVirtualizer = useVirtualizer({
+        count: tableData.length,
+        getScrollElement: () => parentRef.current,
+        estimateSize: () => 34
+    });
+
+    // Calcula o maior width de cada coluna carregada no DOM.
+    const calculateColumnWidths = () => {
+        if (tableRef.current) {
+            const rows = Array.from(tableRef.current.querySelectorAll('tr'));
+            const columnCount = rows[0]?.children.length || 0;
+
+            const maxWidths = Array(columnCount).fill(0);
+
+            rows.forEach(row => {
+                const cells = Array.from(row.children);
+                cells.forEach((cell, colIndex) => {
+                    const width = cell.getBoundingClientRect().width;
+                    maxWidths[colIndex] = Math.max(maxWidths[colIndex], width);
+                });
+            });
+
+            setColWidths(maxWidths);
+            // console.log('Maior largura de cada coluna:', maxWidths);
+        }
+    };
+
+    // Recalcula o tamanho das colunas ao mudar o DOM.
+    useEffect(() => {
+        if (!tableRef.current) return;
+
+        const observer = new MutationObserver(() => {
+            calculateColumnWidths();
+        });
+
+        observer.observe(tableRef.current, {
+            childList: true,        // detecta mudanças nos filhos (linhas adicionadas/removidas)
+            subtree: true,          // detecta mudanças em descendentes (células modificadas)
+            attributes: true,       // detecta mudanças em atributos (se precisar)
+        });
+
+        // Calcular largura inicial
+        calculateColumnWidths();
+
+        return () => observer.disconnect();
+    }, [tableData]);
+
+    // Mantém a célula selecionada visível na tabela virtualizada.
+    useEffect(() => {
+        rowVirtualizer.scrollToIndex(selectedCell.row);
+    }, [selectedCell, rowVirtualizer])
 
      /**
      * Função para executar validação nos dados da célula da tabela.
@@ -135,9 +194,9 @@ function CarregaPlanilha({
         if (!tableData || tableData.length === 0) return null;
 
         return (
-            <>
-                <table className="minha-tabela">
-                    <thead>
+            <div ref={parentRef} style={{ overflowY: "auto", height: "540px" }}>
+                <table ref={tableRef} className="minha-tabela" style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <thead style={{ position: "sticky", top: 0, backgroundColor: "#f0f0f0", zIndex: 2 }}>
                         <CarregaPlanilhaRenderHeader
                             tableData={tableData}
                             setTableData={setTableData}
@@ -152,9 +211,10 @@ function CarregaPlanilha({
                             setColumnIndexAtual={setColumnIndexAtual}
                             theme={theme}
                             tipoPlanilha={tipoPlanilha}
+                            colWidths={colWidths}
                         />
                     </thead>
-                    <tbody>
+                    <tbody style={{ position: "relative", top: '54px', height: `${rowVirtualizer.getTotalSize()}px` }}>
                         <CarregaPlanilhaRenderBody
                             tableData={tableData}
                             setTableData={setTableData}
@@ -163,6 +223,10 @@ function CarregaPlanilha({
                             isEditable={isEditable}
                             setEditable={setEditable}
                             updateCellValue={updateCellValue}
+                            rowVirtualizer={rowVirtualizer}
+                            colWidths={colWidths}
+                            historic={historic}
+                            setHistoric={setHistoric}
                         />
                     </tbody>
                 </table>
@@ -205,6 +269,7 @@ function CarregaPlanilha({
                     setTableData={setTableData}
                     tableHeader={tableHeader}
                     setTableHeader={setTableHeader}
+                    tipoPlanilha={tipoPlanilha}
                 />
                 <ModalBaixarPlanilha
                     tableData={tableData}
@@ -213,8 +278,9 @@ function CarregaPlanilha({
                     setIsDownloadSheetOpen={setIsDownloadSheetOpen}
                     firstSheetName={firstSheetName}
                     workbookName={workbookName}
+                    tipoPlanilha={tipoPlanilha}
                 />
-            </>
+            </div>
         );
     };
 
@@ -269,4 +335,6 @@ CarregaPlanilha.propTypes = {
     isValDataOpen: PropTypes.bool.isRequired,
     setIsValDataOpen: PropTypes.func.isRequired,
     tipoPlanilha: PropTypes.string.isRequired,
+    historic: PropTypes.array.isRequired,
+    setHistoric: PropTypes.func.isRequired
 }

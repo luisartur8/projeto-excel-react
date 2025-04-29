@@ -24,7 +24,7 @@ import './ModalBaixarPlanilha.css'
  * 
  * @return {JSX.Element} Retorna um modal com configurações para exportar o arquivo para um Excel File.
  */
-function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setIsDownloadSheetOpen, firstSheetName, workbookName }) {
+function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setIsDownloadSheetOpen, firstSheetName, workbookName, tipoPlanilha }) {
 
     const [extensionSelectValue, setExtensionSelectValue] = useState('xlsx');
     const [inputNomeValue, setInputNomeValue] = useState('');
@@ -142,7 +142,7 @@ function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setI
      * Função que exporta os dados da tabela para um arquivo Excel.
      * A função verifica se há dados na tabela, estrutura esses dados e gera um arquivo Excel para download.
      * 
-     * @throws {Error} Se a tabela estiver vazia ou o nome do arquivo for inválido, o download não é feito.
+     * @throws {Error} Se a tabela estiver vazia ou o nome do arquivo for inválido, o download não será realizado.
      */
     function exportarParaExcel() {
         if (!tableData || tableData.length === 0) {
@@ -157,7 +157,19 @@ function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setI
 
         const completeFileName = `${inputNomeValue.trim()}.${extensionSelectValue}`;
         const data = tableData.map(row => row.map(cell => cell.value));
-        data.unshift(tableHeader);
+
+        let sheetHeader = tableHeader;
+
+        if (tipoPlanilha === 'lancamento') {
+            sheetHeader = tableHeader.map(head => {
+                if (head === 'nome') return 'cliente_nome';
+                if (head === 'telefone') return 'cliente_telefone';
+                if (head === 'cpf_cnpj') return 'cliente_cpf_cnpj';
+                return head
+            })
+        }
+
+        data.unshift(sheetHeader);
 
         const workbook = XLSX.utils.book_new();
         const worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -204,7 +216,8 @@ ModalBaixarPlanilha.propTypes = {
     isDownloadSheetOpen: PropTypes.bool.isRequired,
     setIsDownloadSheetOpen: PropTypes.func.isRequired,
     firstSheetName: PropTypes.string,
-    workbookName: PropTypes.string
+    workbookName: PropTypes.string,
+    tipoPlanilha: PropTypes.string.isRequired,
 }
 
 export default ModalBaixarPlanilha;

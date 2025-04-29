@@ -93,8 +93,38 @@ function ModalGerenciadorPlanilha() {
      */
     const [removeRowsOpen, setRemoveRowsOpen] = useState(false);
 
+    const [historic, setHistoric] = useState([]);
+
+    // Atualiza o histórico de alterações na tabela.
     useEffect(() => {
-        // Fechar tosos modals se o gerenciador estiver fechado.
+        if (tableData.length === 0) {
+            return;
+        }
+
+        const lastEntry = historic.length > 0 ? historic[historic.length - 1] : null;
+
+        if (!lastEntry || JSON.stringify(lastEntry) !== JSON.stringify(tableData)) {
+            setHistoric((prevHistoric) => {
+                if (prevHistoric.length > 0 && JSON.stringify(prevHistoric[prevHistoric.length - 1]) === JSON.stringify(tableData)) {
+                    return prevHistoric;
+                }
+
+                const newHistoric = [...prevHistoric, tableData];
+
+                if (newHistoric.length > 20) {
+                    newHistoric.shift();
+                }
+
+                return newHistoric;
+            });
+        }
+
+        console.log("1 - ", historic);
+        console.log("2 - ", tableData);
+    }, [tableData]);
+
+    useEffect(() => {
+        // Fechar todos os modals se o gerenciador estiver fechado.
         if (!isGerenciadorVisible || !isLoaded) {
             setIsDownloadSheetOpen(false);
             setDelColOpen(false);
@@ -148,7 +178,7 @@ function ModalGerenciadorPlanilha() {
                 <div className="modal-content">
                     <div className="modal-header">
                         <p>Gerenciador de planilhas</p>
-                        <div>
+                        <div className="top-right-header-gerenciador">
                             <select id="tipoPlanilha" value={tipoPlanilha} onChange={mudarTipoPlanilha}>
                                 <option value="cliente">Cliente</option>
                                 <option value="lancamento">Lançamentos</option>
@@ -193,6 +223,8 @@ function ModalGerenciadorPlanilha() {
                         isValDataOpen={isValDataOpen}
                         setIsValDataOpen={setIsValDataOpen}
                         tipoPlanilha={tipoPlanilha}
+                        historic={historic}
+                        setHistoric={setHistoric}
                     />
                 </div>
             </div>

@@ -36,6 +36,15 @@
     margin-bottom: 15px;
 }
 
+#tipoPlanilha {
+    margin-right: 10px;
+}
+
+.top-right-header-gerenciador {
+    display: flex;
+    align-items: center;
+}
+
 .btn-close {
     color: #aaa;
     font-weight: bold;

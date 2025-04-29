@@ -4,6 +4,8 @@ import TableCell from "./TableCell/TableCell";
 
 import { MdDeleteForever } from "react-icons/md";
 
+import React from "react";
+
 /**
  * @component
  * 
@@ -26,7 +28,11 @@ function CarregaPlanilhaRenderBody({
     setSelectedCell,
     isEditable,
     setEditable,
-    updateCellValue
+    updateCellValue,
+    rowVirtualizer,
+    colWidths,
+    historic,
+    setHistoric
 }) {
 
     /**
@@ -42,17 +48,31 @@ function CarregaPlanilhaRenderBody({
 
     return (
         <>
-            {tableData.map((row, rowIndex) => (
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const rowIndex = virtualRow.index;
+                const row = tableData[rowIndex];
+
+                return (
                 <tr
-                    key={rowIndex}>
-                    <td>
-                        <button className="delete-row-button" onClick={() => removeRow(rowIndex)}><MdDeleteForever size={16} /></button>
+                        key={rowIndex}
+                        style={{
+                            position: "absolute",
+                            transform: `translateY(${virtualRow.start}px)`,
+                            height: `${virtualRow.size}px`,
+                            width: "100%",
+                        }}
+                    >
+                        <td style={{ width: `${colWidths[0]}px` }}>
+                            <button className="delete-row-button" onClick={() => removeRow(rowIndex)}>
+                                <MdDeleteForever size={16} />
+                            </button>
+                        </td>
+                        <td style={{ width: `${colWidths[1]}px` }}>
+                            {rowIndex + 1}
                     </td>
-                    <td>{rowIndex + 1}</td>
-                    {row.map((cell, colIndex) => {
-                        return (
+                        {row.map((cell, colIndex) => (
+                            <React.Fragment key={colIndex}>
                             <TableCell
-                                key={colIndex}
                                 rowIndex={rowIndex}
                                 colIndex={colIndex}
                                 cell={cell}
@@ -61,14 +81,19 @@ function CarregaPlanilhaRenderBody({
                                 isEditable={isEditable}
                                 setEditable={setEditable}
                                 totalRows={tableData.length}
-                                totalCols={row.length}
-                                updateCellValue={updateCellValue}
-                                tableData={tableData}
-                            />
-                        )
-                    })}
+                                    totalCols={row.length}
+                                    updateCellValue={updateCellValue}
+                                    tableData={tableData}
+                                    setTableData={setTableData}
+                                    colWidths={colWidths}
+                                    historic={historic}
+                                    setHistoric={setHistoric}
+                                />
+                            </React.Fragment>
+                        ))}
                 </tr>
-            ))}
+                );
+            })}
         </>
     )
 }
@@ -81,6 +106,10 @@ CarregaPlanilhaRenderBody.propTypes = {
     isEditable: PropTypes.bool.isRequired,
     setEditable: PropTypes.func.isRequired,
     updateCellValue: PropTypes.func.isRequired,
+    rowVirtualizer: PropTypes.object.isRequired,
+    colWidths: PropTypes.array.isRequired,
+    historic: PropTypes.array.isRequired,
+    setHistoric: PropTypes.func.isRequired
 }
 
 export default CarregaPlanilhaRenderBody;

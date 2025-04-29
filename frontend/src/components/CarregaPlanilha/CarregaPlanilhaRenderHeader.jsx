@@ -40,7 +40,8 @@ function CarregaPlanilhaRenderHeader({
     setLocalSubstOpen,
     setColumnIndexAtual,
     theme,
-    tipoPlanilha
+    tipoPlanilha,
+    colWidths
 }) {
 
     /**
@@ -87,11 +88,16 @@ function CarregaPlanilhaRenderHeader({
     };
 
     return (
-        <tr>
-            <th></th>
-            <th></th>
+        <tr style={{
+            position: "absolute",
+            backgroundColor: "white",
+            width: "100%",
+        }}>
+            <th style={{ width: `${colWidths[0]}px` }}></th>
+            <th style={{ width: `${colWidths[1]}px` }}></th>
             {tableHeader.map((_, index) => (
                 <th key={index}
+                    style={{ width: `${colWidths[index + 2]}px` }}
                     draggable onDragStart={(e) => onDragStart(e, index)}
                     onDragOver={onDragOver}
                     onDrop={(e) => onDrop(e, index)}>
@@ -173,6 +179,7 @@ CarregaPlanilhaRenderHeader.propTypes = {
     setColumnIndexAtual: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
     tipoPlanilha: PropTypes.string.isRequired,
+    colWidths: PropTypes.array.isRequired
 }
 
 export default CarregaPlanilhaRenderHeader;

@@ -58,11 +58,10 @@ function ButtonModeloPadrao({ tableData, setTableData, tableHeader, setTableHead
                 ...(Array.isArray(indexHeader.data_nascimento) ? indexHeader.data_nascimento : [-1]),
                 ...(Array.isArray(indexHeader.genero) ? indexHeader.genero : [-1]),
                 ...(Array.isArray(indexHeader.email) ? indexHeader.email : [-1]),
-                ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1]),
-                ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1])
+                ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1])
             ];
 
-            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'data_nascimento', 'genero', 'email', 'anotacao', 'DDD']);
+            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'data_nascimento', 'genero', 'email', 'anotacao']);
         } else if (tipoPlanilha === 'lancamento') {
             ordem = [
                 ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
@@ -74,11 +73,10 @@ function ButtonModeloPadrao({ tableData, setTableData, tableHeader, setTableHead
                 ...(Array.isArray(indexHeader.item_venda) ? indexHeader.item_venda : [-1]),
                 ...(Array.isArray(indexHeader.data_lancamento) ? indexHeader.data_lancamento : [-1]),
                 ...(Array.isArray(indexHeader.nome_vendedor) ? indexHeader.nome_vendedor : [-1]),
-                ...(Array.isArray(indexHeader.codigo_vendedor) ? indexHeader.codigo_vendedor : [-1]),
-                ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1])
+                ...(Array.isArray(indexHeader.codigo_vendedor) ? indexHeader.codigo_vendedor : [-1])
             ];
 
-            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'valor_venda', 'valor_resgate', 'anotacao_venda', 'item_venda', 'data_lancamento', 'nome_vendedor', 'codigo_vendedor', 'DDD']);
+            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'valor_venda', 'valor_resgate', 'anotacao_venda', 'item_venda', 'data_lancamento', 'nome_vendedor', 'codigo_vendedor']);
         } else if (tipoPlanilha === 'oportunidade') {
             ordem = [
                 ...(Array.isArray(indexHeader.nome) ? indexHeader.nome : [-1]),
@@ -88,12 +86,11 @@ function ButtonModeloPadrao({ tableData, setTableData, tableHeader, setTableHead
                 ...(Array.isArray(indexHeader.genero) ? indexHeader.genero : [-1]),
                 ...(Array.isArray(indexHeader.email) ? indexHeader.email : [-1]),
                 ...(Array.isArray(indexHeader.anotacao) ? indexHeader.anotacao : [-1]),
-                ...(Array.isArray(indexHeader.DDD) ? indexHeader.DDD : [-1]),
                 ...(Array.isArray(indexHeader.bonus_valor) ? indexHeader.bonus_valor : [-1]),
                 ...(Array.isArray(indexHeader.bonus_validade) ? indexHeader.bonus_validade : [-1])
             ];
 
-            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'data_nascimento', 'genero', 'email', 'anotacao', 'DDD', 'bonus_valor', 'bonus_validade']);
+            setTableHeader(['nome', 'telefone', 'cpf_cnpj', 'data_nascimento', 'genero', 'email', 'anotacao', 'bonus_valor', 'bonus_validade']);
         } else if (tipoPlanilha === 'produtos') {
             ordem = [
                 ...(Array.isArray(indexHeader.codigo) ? indexHeader.codigo : [-1]),

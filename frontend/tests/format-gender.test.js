@@ -2,7 +2,6 @@ import { describe, test, expect } from 'vitest';
 import { corrigirGenero } from '@utils/validacao';
 
 describe('Função corrigirGenero', () => {
-
     test('Genero para UpperCase', () => {
         const documento1 = 'm';
         const documento2 = 'f';
@@ -12,10 +11,9 @@ describe('Função corrigirGenero', () => {
 
         expect(valueFormmated1).toBe(('M'));
         expect(valueFormmated2).toBe(('F'));
-
     })
 
-    test('Mais de um caracter com genero obvio', () => {
+    test('Mais de um caracter com genero claro', () => {
         const documento1 = 'mu';
         const documento2 = 'mulher';
         const documento3 = 'fe';
@@ -45,7 +43,6 @@ describe('Função corrigirGenero', () => {
         expect(valueFormmated6).toBe(('M'));
         expect(valueFormmated7).toBe(('M'));
         expect(valueFormmated8).toBe(('M'));
-
     })
 
     test('Casos não validos', () => {
@@ -60,7 +57,5 @@ describe('Função corrigirGenero', () => {
         expect(valueFormmated1).toBe((''));
         expect(valueFormmated2).toBe((''));
         expect(valueFormmated3).toBe((''));
-
     }) 
-
 })
