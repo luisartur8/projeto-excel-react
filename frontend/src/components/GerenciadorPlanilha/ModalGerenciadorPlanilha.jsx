@@ -123,6 +123,11 @@ function ModalGerenciadorPlanilha() {
         console.log("2 - ", tableData);
     }, [tableData]);
 
+    // Remove o histórico de alterações quando a planilha carregar.
+    useEffect(() => {
+        setHistoric([])
+    }, [isLoaded]);
+
     useEffect(() => {
         // Fechar todos os modals se o gerenciador estiver fechado.
         if (!isGerenciadorVisible || !isLoaded) {
@@ -131,6 +136,10 @@ function ModalGerenciadorPlanilha() {
             setLocalSubstOpen(false);
             setTelOpen(false);
             setIsValDataOpen(false);
+
+            setIsLoaded(false);
+            setTableData([]);
+            setTableHeader([]);
         }
     }, [isGerenciadorVisible, isLoaded]);
 

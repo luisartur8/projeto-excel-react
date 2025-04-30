@@ -42,8 +42,6 @@ function RenderFileUploadScreen({
             'application/vnd.oasis.opendocument.spreadsheet', // ODS
         ];
 
-        console.log(selectedFile.type)
-
         if (!validFileTypes.includes(selectedFile.type)) {
             alert("Por favor, selecione um arquivo válido (.xlsx, .xls, .csv, .ods).");
             return;

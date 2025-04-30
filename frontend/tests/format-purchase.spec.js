@@ -8,7 +8,6 @@ describe('Format Value Purchase', () => {
 
         const valueFormmated = Number(corrigirCodigo(value));
 
-        console.log(valueFormmated);
         expect(valueFormmated).toBe(1591);
     })
 
@@ -16,8 +15,6 @@ describe('Format Value Purchase', () => {
         const value = '1591,89';
 
         const valueFormmated = Number(formatPurchase(value));
-
-        console.log(valueFormmated)
 
         expect(valueFormmated).toBe(1591.89);
     })
@@ -27,8 +24,6 @@ describe('Format Value Purchase', () => {
 
         const valueFormmated = Number(formatPurchase(value));
 
-        console.log(valueFormmated)
-
         expect(valueFormmated).toBe(1591.89);
     })
 
@@ -36,8 +31,6 @@ describe('Format Value Purchase', () => {
         const value = '1,591.89';
 
         const valueFormmated = Number(formatPurchase(value));
-
-        console.log(valueFormmated)
 
         expect(valueFormmated).toBe(1591.89);
     })
@@ -47,8 +40,6 @@ describe('Format Value Purchase', () => {
 
         const valueFormmated = Number(formatPurchase(value));
 
-        console.log(valueFormmated)
-
         expect(valueFormmated).toBe(1591.89);
     })
 
@@ -57,17 +48,13 @@ describe('Format Value Purchase', () => {
 
         const valueFormmated = Number(formatPurchase(value));
 
-        console.log(valueFormmated)
-
         expect(valueFormmated).toBe(1.59);
     })
-    
+
     test('Formata o valor que não contem "." ou "," que está no tipo number', () => {
         const value = 159;
 
         const valueFormmated = Number(formatPurchase(value));
-
-        console.log(valueFormmated)
 
         expect(valueFormmated).toBe(159);
     })
