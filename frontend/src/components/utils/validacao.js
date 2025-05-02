@@ -141,6 +141,8 @@ export function corrigirCpf_cnpj(cpf_cnpj) {
 }
 
 export function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/yyyy', formatoFinal = 'dd/mm/yyyy') {
+    data_nascimento = data_nascimento.trim().split(' ')[0]; // Para pegar apenas o começo caso tenha horário envolvido
+
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
     const numeroBarras = (data_nascimento.match(/\//g) || []).length; // Quantidade de barras
@@ -479,29 +481,31 @@ export function corrigirData_lancamento(data, formatoOrigem, formatoFinal = 'dd/
     let time = [];
 
     if (data.includes(' ')) {
-        data = data.split(' ');
-        time = data[1].split(':');
+        const partes = data.split(' ');
+        if (partes.length > 2) return "";
+
+        // Remove o que não pode ser horário
+        time = partes[1].split(':').map(t => t.replace(/\D/g, ''));
+        time = time.filter(t => t !== '');
+        time = [...time, '00', '00', '00'].slice(0, 3);
+
+        // Horário possivel
+        const [hh, mm, ss] = time.map(Number);
+        if (hh < 0 || hh >= 24 || mm < 0 || mm >= 60 || ss < 0 || ss >= 60) return "";
+
+        // Mask '00:00:00'
+        const horaFormatada = [hh, mm, ss].map(n => String(n).padStart(2, '0')).join(':');
+
+        const data_lancamento = corrigirData_nascimento(partes[0], formatoOrigem, formatoFinal);
+        if (!data_lancamento) return "";
+
+        return `${data_lancamento} ${horaFormatada}`;
     } else {
+        // Validação de data sem horário
         const dataCorrigida = corrigirData_nascimento(data, formatoOrigem, formatoFinal);
-        if (!dataCorrigida) {
-            return "";
-        }
-        return `${dataCorrigida} ${'00:00:00'}`;
+        if (!dataCorrigida) return "";
+        return `${dataCorrigida} 00:00:00`;
     }
-
-    if (data.length > 2 || time.length != 3) {
-        return "";
-    }
-
-    // Formato horas
-    if (time[0] < 0 || time[0] >= 24) return "";
-    if (time[1] < 0 || time[1] >= 60) return "";
-    if (time[2] < 0 || time[2] >= 60) return "";
-
-    // Corrigir data
-    let data_lancamento = corrigirData_nascimento(data[0], formatoOrigem, formatoFinal);
-
-    return `${data_lancamento} ${data[1]}`;
 }
 
 export function corrigirCodigo_vendedor(codigo) {
