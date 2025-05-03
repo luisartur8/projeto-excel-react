@@ -38,8 +38,8 @@ const aplicarMascaraCPF = valor => valor.replace(/(\d{3})(\d)/, '$1.$2').replace
 const aplicarMascaraCNPJ = valor => valor.replace(/(\d{2})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
 
 export function corrigirNome(nome) {
-    // Regex: Remove espaço extra por apenas um | Substitui '.' e '&' por espaço.
-    nome = nome.trim().toUpperCase().replace(/[.&]/g, ' ').replace(/\s+/g, " ");
+    // Regex: Remove espaço extra por apenas um | Substitui alguns caracteres por espaço
+    nome = nome.trim().toUpperCase().replace(/[.&'"]/g, ' ').replace(/\s+/g, " ");
 
     // Ü -> U
     nome = nome.replace(/[äÄ]/g, "A")
@@ -53,8 +53,22 @@ export function corrigirNome(nome) {
     return nome;
 }
 
+function removeLeadingZerosAfterPrefix(numero) {
+    let str = numero.toString();
+    let prefixo = str.slice(0, 2);
+    let resto = str.slice(2);
+
+    let i = 0;
+    while (resto[i] === '0') {
+        i++;
+    }
+
+    return prefixo + resto.slice(i);
+}
+
 export function corrigirTelefone(telefone, cbTelefoneInserirDDD, ddd) {
-    if (telefone.includes('+') && !telefone.replace(/[^0-9+]/g, "").startsWith('+55')) {
+    // Procura se tem código do país diferente de 55, o regex sanitiza o número, tira zeros a frente e verifica o começo
+    if (telefone.includes('+') && !telefone.replace(/[^0-9]/g, "").replace(/^0+/, '').startsWith('55')) {
         return "";
     }
 
@@ -70,9 +84,14 @@ export function corrigirTelefone(telefone, cbTelefoneInserirDDD, ddd) {
         return "";
     }
 
-    if (telefone.startsWith("55") && (telefone.length === 12 || telefone.length === 13)) {
+    // Remove zeros após o código do país para obter o tamanho real
+    const telTest = removeLeadingZerosAfterPrefix(telefone)
+
+    if (telefone.startsWith("55") && (telTest.length === 12 || telTest.length === 13)) {
         telefone = telefone.substring(2);
     }
+
+    telefone = telefone.replace(/^0+/, '');
 
     if ((telefone.length === 8 || telefone.length === 9) && cbTelefoneInserirDDD) {
         telefone = `${ddd}${telefone}`;

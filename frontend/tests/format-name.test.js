@@ -12,7 +12,7 @@ describe('Função corrigirNome', () => {
 
     test('Permite apenas caracteres do alfabeto latino', () => {
         const nome1 = 'OláàÇ';
-        const nome2 = 'ü';
+        const nome2 = 'ми';
 
         const valueFormmated1 = String(corrigirNome(nome1));
         const valueFormmated2 = String(corrigirNome(nome2));

@@ -81,6 +81,26 @@ describe('Função corrigirTelefone', () => {
 
         expect(valueFormmated1).toBe(('(48) 98888-8888'));
     })
+
+    test('Remover zeros a frente no meio da função', () => {
+        const telefone1 = '055 0048 8888-8888';
+        const telefone2 = '+055 0048 8888-8888';
+        const telefone3 = '00+055 0048 8888-8888';
+        const telefone4 = '40+055 0048 8888-8888';
+        const telefone5 = '55 (048) 8888-888';
+
+        const valueFormmated1 = String(corrigirTelefone(telefone1, true, ''));
+        const valueFormmated2 = String(corrigirTelefone(telefone2, true, ''));
+        const valueFormmated3 = String(corrigirTelefone(telefone3, true, ''));
+        const valueFormmated4 = String(corrigirTelefone(telefone4, true, ''));
+        const valueFormmated5 = String(corrigirTelefone(telefone5, true, ''));
+
+        expect(valueFormmated1).toBe(('(48) 98888-8888'));
+        expect(valueFormmated2).toBe(('(48) 98888-8888'));
+        expect(valueFormmated3).toBe(('(48) 98888-8888'));
+        expect(valueFormmated4).toBe((''));
+        expect(valueFormmated5).toBe((''));
+    })
 })
 
 describe('Função corrigirTelefoneSemDDD', () => {
