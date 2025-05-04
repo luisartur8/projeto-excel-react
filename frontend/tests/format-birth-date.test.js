@@ -108,7 +108,7 @@ describe('Função corrigirData_nascimento', () => {
         expect(valueFormmated2).toBe((`01/01/20${anoAtual}`));
     })
 
-    test('Dados a mais', () => {
+    test('Dados extras', () => {
         const documento1 = 'extra 1/01/2024';
         const documento2 = '01/01/2024 extra';
         const documento3 = '0a 01/01/2024 a0test10';
@@ -125,7 +125,28 @@ describe('Função corrigirData_nascimento', () => {
         expect(valueFormmated4).toBe((''));
     })
 
-    test('Todas as combinações possiveis', () => { })
+    test('Transformando mês em número', () => {
+        const documento1 = 'extra 1/mar/2024 extra';
+        const documento2 = '01-mar-2024 extra';
+        const documento3 = '0a 01-fevereiro-2024 a0test10';
+        const documento4 = '0a 01;MAY;2024 a0test10';
+        const documento5 = '0a 01 may 2024 a0test10';
+        const documento6 = 'Evento em 01-março-2024';
+
+        const valueFormmated1 = String(corrigirData_nascimento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_nascimento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_nascimento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated4 = String(corrigirData_nascimento(documento4, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated5 = String(corrigirData_nascimento(documento5, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated6 = String(corrigirData_nascimento(documento6, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('01/03/2024'));
+        expect(valueFormmated2).toBe(('01/03/2024'));
+        expect(valueFormmated3).toBe(('01/02/2024'));
+        expect(valueFormmated4).toBe(('01/05/2024'));
+        expect(valueFormmated5).toBe((''));
+        expect(valueFormmated6).toBe(('01/03/2024'));
+    })
 })
 
 describe('Função corrigirData_lancamento', () => {
@@ -180,5 +201,28 @@ describe('Função corrigirData_lancamento', () => {
         expect(valueFormmated2).toBe(('20/10/2024 23:59:59'));
         expect(valueFormmated3).toBe(('20/10/2024 23:59:50'));
         expect(valueFormmated4).toBe((''));
+    })
+
+    test('Transformando mês em número', () => {
+        const documento1 = 'extra 1/mar/2024 extra';
+        const documento2 = '01-mar-2024 extra';
+        const documento3 = '0a 01-fevereiro-2024 a0test10';
+        const documento4 = '0a 01;MAY;2024 a0test10';
+        const documento5 = '0a 01 may 2024 a0test10'; // da pra melhorar isso, detectar os espaços ao redor e substituir por /
+        const documento6 = 'Evento em 01-março-2024   12';
+
+        const valueFormmated1 = String(corrigirData_lancamento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_lancamento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_lancamento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated4 = String(corrigirData_lancamento(documento4, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated5 = String(corrigirData_lancamento(documento5, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated6 = String(corrigirData_lancamento(documento6, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('01/03/2024 00:00:00'));
+        expect(valueFormmated2).toBe(('01/03/2024 00:00:00'));
+        expect(valueFormmated3).toBe(('01/02/2024 10:00:00'));
+        expect(valueFormmated4).toBe(('01/05/2024 10:00:00'));
+        expect(valueFormmated5).toBe((''));
+        expect(valueFormmated6).toBe(('01/03/2024 12:00:00'));
     })
 })

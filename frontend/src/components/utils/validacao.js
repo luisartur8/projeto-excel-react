@@ -159,8 +159,46 @@ export function corrigirCpf_cnpj(cpf_cnpj) {
     }
 }
 
+const mapaOriginal = {
+    janeiro: '01', jan: '01',
+    fevereiro: '02', fev: '02', feb: '02',
+    março: '03', mar: '03',
+    abril: '04', abr: '04', apr: '04',
+    maio: '05', mai: '05', may: '05',
+    junho: '06', jun: '06',
+    julho: '07', jul: '07',
+    agosto: '08', ago: '08', aug: '08',
+    setembro: '09', set: '09', sep: '09',
+    outubro: '10', out: '10', oct: '10',
+    novembro: '11', nov: '11',
+    dezembro: '12', dez: '12', dec: '12'
+};
+
+const normalizar = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+const mesMap = new Map(
+    Object.entries(mapaOriginal).map(([k, v]) => [normalizar(k), v])
+);
+
+const regexMes = new RegExp(
+    Object.keys(mapaOriginal)
+        .sort((a, b) => b.length - a.length)
+        .join('|'),
+    'gi'
+);
+
+function substituirMesesPorNumeros(str) {
+    return str.replace(regexMes, (match) => {
+        const normalizado = normalizar(match);
+        return mesMap.get(normalizado) || match;
+    });
+}
+
 export function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/yyyy', formatoFinal = 'dd/mm/yyyy') {
     data_nascimento = data_nascimento.trim().replace(/^[^1-9]*([1-9]\d*)/, "$1").split(' ')[0]; // Para pegar apenas o começo caso tenha horário envolvido
+
+    data_nascimento = substituirMesesPorNumeros(data_nascimento); // jan -> 01, etc...
 
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
@@ -495,7 +533,7 @@ export const corrigirItem_venda = item => corrigirAnotacao(item);
 
 export function corrigirData_lancamento(data, formatoOrigem, formatoFinal = 'dd/mm/yyyy') {
     // Limpa espaços/letras nas bordas e remove zeros à esquerda até o primeiro número encontrado
-    data = data.replace(/\s+/g, " ").match(/\d.*\d/)[0].replace(/^[\s0]+/, "");
+    data = data.trim().replace(/^[^1-9]*([1-9]\d*)/, "$1").replace(/\s+/g, " ");
 
     let time = [];
 
