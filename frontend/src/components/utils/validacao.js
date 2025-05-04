@@ -160,7 +160,7 @@ export function corrigirCpf_cnpj(cpf_cnpj) {
 }
 
 export function corrigirData_nascimento(data_nascimento, formatoOrigem = 'dd/mm/yyyy', formatoFinal = 'dd/mm/yyyy') {
-    data_nascimento = data_nascimento.trim().split(' ')[0]; // Para pegar apenas o começo caso tenha horário envolvido
+    data_nascimento = data_nascimento.trim().replace(/^[^1-9]*([1-9]\d*)/, "$1").split(' ')[0]; // Para pegar apenas o começo caso tenha horário envolvido
 
     data_nascimento = data_nascimento.replace(/\D/g, '/'); // Tudo o que não é número vira barra
 
@@ -494,14 +494,13 @@ export const corrigirAnotacao_venda = anotacao => corrigirAnotacao(anotacao);
 export const corrigirItem_venda = item => corrigirAnotacao(item);
 
 export function corrigirData_lancamento(data, formatoOrigem, formatoFinal = 'dd/mm/yyyy') {
-    // Remove espaços extras
-    data = data.trim().replace(/\s+/g, " ");
+    // Limpa espaços/letras nas bordas e remove zeros à esquerda até o primeiro número encontrado
+    data = data.replace(/\s+/g, " ").match(/\d.*\d/)[0].replace(/^[\s0]+/, "");
 
     let time = [];
 
     if (data.includes(' ')) {
         const partes = data.split(' ');
-        if (partes.length > 2) return "";
 
         // Remove o que não pode ser horário
         time = partes[1].split(':').map(t => t.replace(/\D/g, ''));

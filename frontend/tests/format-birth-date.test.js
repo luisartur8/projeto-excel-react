@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { corrigirData_nascimento } from '@utils/validacao';
+import { corrigirData_nascimento, corrigirData_lancamento } from '@utils/validacao';
 
 describe('Função corrigirData_nascimento', () => {
     test('Substituição por barra', () => {
@@ -108,5 +108,77 @@ describe('Função corrigirData_nascimento', () => {
         expect(valueFormmated2).toBe((`01/01/20${anoAtual}`));
     })
 
+    test('Dados a mais', () => {
+        const documento1 = 'extra 1/01/2024';
+        const documento2 = '01/01/2024 extra';
+        const documento3 = '0a 01/01/2024 a0test10';
+        const documento4 = '0a1 01/01/2024 a0test10';
+
+        const valueFormmated1 = String(corrigirData_nascimento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_nascimento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_nascimento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated4 = String(corrigirData_nascimento(documento4, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('01/01/2024'));
+        expect(valueFormmated2).toBe(('01/01/2024'));
+        expect(valueFormmated3).toBe(('01/01/2024'));
+        expect(valueFormmated4).toBe((''));
+    })
+
     test('Todas as combinações possiveis', () => { })
+})
+
+describe('Função corrigirData_lancamento', () => {
+    test('Sem horário', () => {
+        const documento1 = '20-10-2024';
+        const documento2 = ' 20;10;2024 d:m:y';
+        const documento3 = '20/10/2024 d';
+
+        const valueFormmated1 = String(corrigirData_lancamento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_lancamento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_lancamento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('20/10/2024 00:00:00'));
+        expect(valueFormmated2).toBe(('20/10/2024 00:00:00'));
+        expect(valueFormmated3).toBe(('20/10/2024 00:00:00'));
+    })
+
+    test('Horário incorreto ou parcial', () => {
+        const documento1 = '20/10/2024 24:00:00';
+        const documento2 = '20/10/2024 00:60:00';
+        const documento3 = '20/10/2024 1';
+
+        const valueFormmated1 = String(corrigirData_lancamento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_lancamento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_lancamento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe((''));
+        expect(valueFormmated2).toBe((''));
+        expect(valueFormmated3).toBe(('20/10/2024 01:00:00'));
+    })
+
+    test('Horário completo', () => {
+        const documento1 = '20/10/2024 23:59:59';
+
+        const valueFormmated1 = String(corrigirData_lancamento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('20/10/2024 23:59:59'));
+    })
+
+    test('Dados extras', () => {
+        const documento1 = 'extra 20/10/2024 23:59:59 extra';
+        const documento2 = 'extra0 20/10/2024 23:59:59 extra';
+        const documento3 = '0 0 0 00020/10/2024 23:59:50extra 0';
+        const documento4 = '0 0 0 00020/10/2024 23:59:50extra0';
+
+        const valueFormmated1 = String(corrigirData_lancamento(documento1, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated2 = String(corrigirData_lancamento(documento2, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated3 = String(corrigirData_lancamento(documento3, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+        const valueFormmated4 = String(corrigirData_lancamento(documento4, 'dd/mm/yyyy', 'dd/mm/yyyy'));
+
+        expect(valueFormmated1).toBe(('20/10/2024 23:59:59'));
+        expect(valueFormmated2).toBe(('20/10/2024 23:59:59'));
+        expect(valueFormmated3).toBe(('20/10/2024 23:59:50'));
+        expect(valueFormmated4).toBe((''));
+    })
 })
