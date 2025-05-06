@@ -42,6 +42,8 @@ function ModalValidaData({ isValDataOpen, setIsValDataOpen, executarValidacao, c
             setFinalTwo('mm');
             setFinalThree('yyyy');
             centerModal('#modalValidaNascimento');
+
+            document.getElementById('modalValidaNascimento').focus();
         }
     }, [isValDataOpen]);
 
@@ -91,8 +93,25 @@ function ModalValidaData({ isValDataOpen, setIsValDataOpen, executarValidacao, c
         executarValidacao(selectedValueAtual, columnIndexAtual, null, null, formatoOriginal, formatoFinal);
     }
 
+    /**
+     * Lida com a tecla pressionada no modal.
+     * Valida a coluna ao pressionar 'Enter'.
+     * ou fecha o modal ao pressionar 'Escape'.
+     * 
+     * @param {KeyboardEvent} e - Evento da tecla pressionada.
+     * 
+     * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
+     */
+    const actionsByKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            validarData();
+        } else if (e.key === 'Escape') {
+            closeModal();
+        }
+    };
+
     return (
-        <div id="modalValidaNascimento" style={{ display: isValDataOpen ? "flex" : "none" }}>
+        <div id="modalValidaNascimento" tabIndex="-1" onKeyDown={actionsByKeyPress} style={{ display: isValDataOpen ? "flex" : "none" }}>
             <div className="modal-nascimento-conteudo draggable-modal">
                 <div id="modalHeaderValidaNascimento" className="dragHandle"></div>
                 <div className="nascimento-conteudo-central">

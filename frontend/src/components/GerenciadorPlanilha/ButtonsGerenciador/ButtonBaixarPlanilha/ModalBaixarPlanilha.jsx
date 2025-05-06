@@ -50,6 +50,8 @@ function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setI
             setInputNomeValue(splitByLastDot(workbookName)[0]);
 
             centerModal('#modalBaixarPlanilha');
+
+            document.getElementById('modalBaixarPlanilha').focus();
         }
     }, [isDownloadSheetOpen, workbookName]);
 
@@ -181,8 +183,25 @@ function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setI
         setIsDownloadSheetOpen(false);
     }
 
+    /**
+     * Lida com a tecla pressionada no modal.
+     * Baixa a planilha ao pressionar 'Enter'.
+     * ou fecha o modal ao pressionar 'Escape'.
+     * 
+     * @param {KeyboardEvent} e - Evento da tecla pressionada.
+     * 
+     * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
+     */
+    const actionsByKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            exportarParaExcel();
+        } else if (e.key === 'Escape') {
+            btnCloseDownload();
+        }
+    };
+
     return (
-        <div id="modalBaixarPlanilha" tabIndex="-1" style={{ display: isDownloadSheetOpen ? "flex" : "none" }}>
+        <div id="modalBaixarPlanilha" tabIndex="-1" onKeyDown={actionsByKeyPress} style={{ display: isDownloadSheetOpen ? "flex" : "none" }}>
             <div className="modalHeaderBaixarPlanilhaConteudo draggable-modal">
                 <div className="modalHeaderBaixarPlanilha dragHandle">
                     <p>Baixar planilha</p>

@@ -112,6 +112,8 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
 
             setInfoRemovedRowCols('ㅤ');
             centerModal('#modalRemoveLinhas');
+
+            document.getElementById('modalRemoveLinhas').focus();
         }
     }, [removeRowsOpen, tipoPlanilha])
 
@@ -124,8 +126,22 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
         setRemoveRowsOpen(false);
     }
 
+    /**
+     * Lida com a tecla pressionada no modal.
+     * Fecha o modal ao pressionar 'Escape'.
+     * 
+     * @param {KeyboardEvent} e - Evento da tecla pressionada.
+     * 
+     * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
+     */
+    const actionsByKeyPress = (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    };
+
     return (
-        <div id="modalRemoveLinhas" style={{ display: removeRowsOpen ? "flex" : "none" }}>
+        <div id="modalRemoveLinhas" tabIndex="-1" onKeyDown={actionsByKeyPress} style={{ display: removeRowsOpen ? "flex" : "none" }}>
             <div className="modal-remove-linhas-conteudo draggable-modal">
                 <div id="modalHeaderRemoveLinhas" className="dragHandle">
                     <label>Remover linhas</label>

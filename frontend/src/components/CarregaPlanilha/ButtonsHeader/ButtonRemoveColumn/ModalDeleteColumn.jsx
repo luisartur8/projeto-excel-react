@@ -88,7 +88,6 @@ function ModalDeleteColumn({
      * ou fecha o modal ao pressionar 'Escape'.
      * 
      * @param {KeyboardEvent} e - Evento da tecla pressionada.
-     * @param {number} columnIndexAtual - Índice da coluna a ser excluída.
      * 
      * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
      */

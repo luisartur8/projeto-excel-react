@@ -44,6 +44,10 @@ function ModalValidaTelefone({ isTelOpen, setTelOpen, executarValidacao, columnI
         setOpacityDDDInvalido(0);
 
         centerModal('.modal-telefone-content');
+
+        if (isTelOpen) {
+            document.getElementById('modalValidaTelefone').focus();
+        }
     }, [isTelOpen]);
 
     useEffect(() => {
@@ -130,8 +134,25 @@ function ModalValidaTelefone({ isTelOpen, setTelOpen, executarValidacao, columnI
         setInputValue(e.target.value);
     }
 
+    /**
+     * Lida com a tecla pressionada no modal.
+     * Valida a coluna ao pressionar 'Enter'.
+     * ou fecha o modal ao pressionar 'Escape'.
+     * 
+     * @param {KeyboardEvent} e - Evento da tecla pressionada.
+     * 
+     * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
+     */
+    const actionsByKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            validarTelefone();
+        } else if (e.key === 'Escape') {
+            closeValidacaoTelefone();
+        }
+    };
+
     return (
-        <div id="modalValidaTelefone" style={{ display: isTelOpen ? "flex" : "none" }}>
+        <div id="modalValidaTelefone" tabIndex="-1" onKeyDown={actionsByKeyPress} style={{ display: isTelOpen ? "flex" : "none" }}>
             <div className="modal-telefone-content draggable-modal">
                 <div id="modalHeaderValidaTelefone" className="dragHandle"></div>
                 <div className="modal-telefone-bordinha">
