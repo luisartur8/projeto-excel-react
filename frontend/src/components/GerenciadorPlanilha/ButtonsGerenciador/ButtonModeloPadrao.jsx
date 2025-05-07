@@ -69,7 +69,7 @@ function ButtonModeloPadrao({ tableData, setTableData, tableHeader, setTableHead
                 ...(Array.isArray(indexHeader.cpf_cnpj) ? indexHeader.cpf_cnpj : [-1]),
                 ...(Array.isArray(indexHeader.valor_venda) ? indexHeader.valor_venda : [-1]),
                 ...(Array.isArray(indexHeader.valor_resgate) ? indexHeader.valor_resgate : [-1]),
-                ...(Array.isArray(indexHeader.anotacao_venda) ? indexHeader.anotacao : [-1]),
+                ...(Array.isArray(indexHeader.anotacao_venda) ? indexHeader.anotacao_venda : [-1]),
                 ...(Array.isArray(indexHeader.item_venda) ? indexHeader.item_venda : [-1]),
                 ...(Array.isArray(indexHeader.data_lancamento) ? indexHeader.data_lancamento : [-1]),
                 ...(Array.isArray(indexHeader.nome_vendedor) ? indexHeader.nome_vendedor : [-1]),
