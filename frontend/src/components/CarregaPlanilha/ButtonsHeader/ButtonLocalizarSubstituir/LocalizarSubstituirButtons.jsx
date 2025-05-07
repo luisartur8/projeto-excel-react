@@ -106,6 +106,9 @@ function LocalizarSubstituirButtons({
          * @returns {boolean} - Retorna true se uma correspondência for encontrada, caso contrário false.
          */
         function searchInRows(startRow, endRow) {
+            // Correção para que funcione quando a célula selecionada estiver na ultima linha (startRow === totalRows).
+            startRow = startRow % totalRows;
+
             for (let r = startRow; r !== endRow; r = (r + 1) % totalRows) {
                 let cellValue = tableData[r][col].value;
 
