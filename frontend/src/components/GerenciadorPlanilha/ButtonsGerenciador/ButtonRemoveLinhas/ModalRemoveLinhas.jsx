@@ -135,6 +135,7 @@ function ModalRemoveLinhas({ removeRowsOpen, setRemoveRowsOpen, tableData, setTa
      * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
      */
     const actionsByKeyPress = (e) => {
+        e.preventDefault();
         if (e.key === 'Escape') {
             closeModal();
         }

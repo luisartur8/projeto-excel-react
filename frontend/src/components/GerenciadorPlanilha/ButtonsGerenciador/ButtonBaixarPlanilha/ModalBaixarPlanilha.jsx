@@ -197,6 +197,8 @@ function ModalBaixarPlanilha({ tableData, tableHeader, isDownloadSheetOpen, setI
             exportarParaExcel();
         } else if (e.key === 'Escape') {
             btnCloseDownload();
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
         }
     };
 

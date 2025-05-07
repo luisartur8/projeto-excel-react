@@ -103,6 +103,7 @@ function ModalValidaData({ isValDataOpen, setIsValDataOpen, executarValidacao, c
      * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
      */
     const actionsByKeyPress = (e) => {
+        e.preventDefault();
         if (e.key === 'Enter') {
             validarData();
         } else if (e.key === 'Escape') {

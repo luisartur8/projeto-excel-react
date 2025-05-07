@@ -137,6 +137,7 @@ function ModalValidaTelefone({ isTelOpen, setTelOpen, executarValidacao, columnI
     /**
      * Lida com a tecla pressionada no modal.
      * Valida a coluna ao pressionar 'Enter'.
+     * Troca o tipo de validação ao pressionar 'Tab', 'ArrowUp' ou 'ArrowDown'.
      * ou fecha o modal ao pressionar 'Escape'.
      * 
      * @param {KeyboardEvent} e - Evento da tecla pressionada.
@@ -145,9 +146,19 @@ function ModalValidaTelefone({ isTelOpen, setTelOpen, executarValidacao, columnI
      */
     const actionsByKeyPress = (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault();
             validarTelefone();
         } else if (e.key === 'Escape') {
+            e.preventDefault();
             closeValidacaoTelefone();
+        } else if ((e.key === 'Tab' || e.key === 'ArrowUp' || e.key === 'ArrowDown') && (!e.altKey && !e.metaKey)) {
+            e.preventDefault();
+            if (radioComDDD) {
+                semDDDClick()
+            }
+            if (radioSemDDD) {
+                comDDDClick()
+            }
         }
     };
 

@@ -64,6 +64,8 @@ function ModalLocalizarSubstituir({
             setCbCorrespondeCelula(false);
             setInfoLocalSubst('');
             centerModal('#modalLocalizarSubstituir');
+
+            document.getElementById('modalLocalizarSubstituir').focus();
         }
 
     }, [isLocalSubstOpen])
@@ -80,10 +82,42 @@ function ModalLocalizarSubstituir({
      */
     function closeLocalSubst() {
         setLocalSubstOpen(false);
+        setSearchEmpty(true);
     }
 
+    /**
+     * Lida com a tecla pressionada no modal.
+     * Procura o item ao pressionar 'Enter'.
+     * Troca de input ao pressionar 'Tab'.
+     * ou fecha o modal ao pressionar 'Escape'.
+     * 
+     * @param {KeyboardEvent} e - Evento da tecla pressionada.
+     * 
+     * @returns {void} Não retorna nada, apenas executa uma ação baseada na tecla pressionada.
+     */
+    const actionsByKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!isSearchEmpty) {
+                document.querySelector('.search-button').click();
+            }
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            closeLocalSubst();
+        } else if (e.key === 'Tab' && (!e.altKey && !e.metaKey)) {
+            e.preventDefault();
+            const searchInput = document.querySelector('.modal-input-search')
+
+            if (document.activeElement === searchInput) {
+                document.querySelector('.modal-input-replace').focus();
+            } else {
+                document.querySelector('.modal-input-search').focus();
+            }
+        }
+    };
+
     return (
-        <div id="modalLocalizarSubstituir" style={{ display: isLocalSubstOpen ? "flex" : "none" }}>
+        <div id="modalLocalizarSubstituir" tabIndex="-1" onKeyDown={actionsByKeyPress} style={{ display: isLocalSubstOpen ? "flex" : "none" }}>
             <div className="modal-localiza-subst-conteudo draggable-modal">
                 <div>
                     <div id="modalHeaderLocalizarSubstituir" className="dragHandle">
